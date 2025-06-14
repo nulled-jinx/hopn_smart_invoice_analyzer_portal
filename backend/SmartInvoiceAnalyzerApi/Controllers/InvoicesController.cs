@@ -42,41 +42,20 @@ namespace SmartInvoiceAnalyzerApi.Controllers
       return CreatedAtAction(nameof(GetInvoice), new { id = invoice.Id }, invoice);
     }
 
-    // [HttpPut("{id}")]
-    // public async Task<IActionResult> UpdateInvoice(int id, [FromBody] Invoice updatedInvoice)
-    // {
-    //   if (id != updatedInvoice.Id)
-    //     return BadRequest();
+    [HttpGet("summary")]
+    public async Task<IActionResult> GetInvoicesSummary()
+    {
+      var invoices = await _context.Invoices.ToListAsync();
 
-    //   var invoice = await _context.Invoices.FindAsync(id);
-    //   if (invoice == null)
-    //     return NotFound();
+      var summary = new
+      {
+        totalInvoices = invoices.Count,
+        anomalies = invoices.Count(i => i.Anomalies != null && i.Anomalies.Any()),
+        toPay = invoices.Count(i => i.InvoiceType == "To Pay"),
+        toCollect = invoices.Count(i => i.InvoiceType == "To Collect")
+      };
 
-    //   invoice.Vendor = updatedInvoice.Vendor;
-    //   invoice.Date = updatedInvoice.Date;
-    //   invoice.Amount = updatedInvoice.Amount;
-    //   invoice.TaxId = updatedInvoice.TaxId;
-    //   invoice.DueDate = updatedInvoice.DueDate;
-    //   invoice.Status = updatedInvoice.Status;
-    //   invoice.InvoiceType = updatedInvoice.InvoiceType;
-    //   invoice.Anomalies = updatedInvoice.Anomalies;
-
-    //   await _context.SaveChangesAsync();
-
-    //   return NoContent();
-    // }
-
-    // [HttpDelete("{id}")]
-    // public async Task<IActionResult> DeleteInvoice(int id)
-    // {
-    //   var invoice = await _context.Invoices.FindAsync(id);
-    //   if (invoice == null)
-    //     return NotFound();
-
-    //   _context.Invoices.Remove(invoice);
-    //   await _context.SaveChangesAsync();
-
-    //   return NoContent();
-    // }
+      return Ok(summary);
+    }
   }
 }
