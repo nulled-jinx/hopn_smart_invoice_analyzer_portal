@@ -41,7 +41,9 @@ const InvoiceList = () => {
     }
 
     if (filters.status) {
-      filtered = filtered.filter((inv) => inv.status === filters.status);
+      filtered = filtered.filter(
+        (inv) => inv.status.toLowerCase() === filters.status.toLowerCase()
+      );
     }
 
     if (filters.fromDate) {
@@ -132,7 +134,10 @@ const InvoiceList = () => {
                   {new Date(inv.date).toLocaleDateString()}
                 </td>
                 <td data-label="Amount">${inv.amount.toFixed(2)}</td>
-                <td data-label="Status">{inv.status}</td>
+                <td data-label="Status">
+                  {inv.status.toLowerCase().charAt(0).toUpperCase() +
+                    inv.status.toLowerCase().slice(1)}
+                </td>
                 <td data-label="Type">{inv.type}</td>
               </tr>
             ))
