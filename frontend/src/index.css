@@ -1,0 +1,198 @@
+/* Base/mobile styles */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  text-align: center;
+}
+
+.app-container {
+  max-width: 100%;
+  margin: auto;
+  padding: 10px;
+  background: white;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+nav a {
+  text-decoration: none;
+  color: #3498db;
+  margin-right: 15px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a:focus {
+  color: #1d6fa5;
+}
+
+form input,
+form select,
+form button {
+  font-size: 1rem;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+form button:disabled {
+  background: #a3c4dc;
+  cursor: not-allowed;
+}
+
+.manual-fields label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+/* Tables mobile-first - block rows with labels */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead {
+  display: none;
+}
+
+tbody tr {
+  display: block;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+}
+
+tbody td {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  text-align: left;
+}
+
+tbody td:last-child {
+  border-bottom: 0;
+}
+
+tbody td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  color: #0078d7;
+  flex-basis: 45%;
+  white-space: nowrap;
+}
+
+/* Hover effect */
+tbody tr:hover {
+  background-color: #f0f8ff;
+  cursor: pointer;
+}
+
+/* Typography */
+h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+p {
+  line-height: 1.5;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+.anomaly {
+  color: red;
+  font-weight: 600;
+}
+
+/* Larger screens (tablet and desktop) */
+@media (min-width: 700px) {
+  .app-container {
+    max-width: 960px;
+    padding: 20px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  nav a {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  /* Table - revert to normal table layout */
+  thead {
+    display: table-header-group;
+    background-color: #0078d7;
+    color: white;
+  }
+
+  tbody tr {
+    display: table-row;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background: none;
+  }
+
+  tbody td {
+    display: table-cell;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    position: static;
+  }
+
+  tbody td::before {
+    display: none;
+  }
+
+  tbody tr:hover {
+    background-color: #e0f0ff;
+  }
+}

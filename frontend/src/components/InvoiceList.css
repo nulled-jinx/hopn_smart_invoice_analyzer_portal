@@ -1,0 +1,157 @@
+/* Container and layout */
+.invoice-list-container {
+  max-width: 900px;
+  margin: 20px auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Filters container */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+/* Filter inputs and selects */
+.filters input[type="text"],
+.filters select,
+.filters input[type="date"] {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  min-width: 150px;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filters input[type="text"]:focus,
+.filters select:focus,
+.filters input[type="date"]:focus {
+  border-color: #0078d7;
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 120, 215, 0.3);
+}
+
+/* Larger screens filters layout */
+@media (min-width: 700px) {
+  .filters input[type="text"],
+  .filters select,
+  .filters input[type="date"] {
+    width: auto;
+  }
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Thead styles on desktop only */
+thead {
+  background-color: #0078d7;
+  color: white;
+  display: none; /* hide by default */
+}
+
+/* Show thead on desktop */
+@media (min-width: 700px) {
+  thead {
+    display: table-header-group;
+  }
+}
+
+thead th {
+  padding: 12px 15px;
+  font-weight: 600;
+  text-align: left;
+}
+
+tbody tr {
+  background-color: #fff;
+  transition: background-color 0.25s ease;
+  cursor: pointer;
+  display: block; /* block on mobile */
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* On desktop revert row styles */
+@media (min-width: 700px) {
+  tbody tr {
+    display: table-row;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #e0f0ff;
+}
+
+tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Remove flex on desktop */
+@media (min-width: 700px) {
+  tbody td {
+    display: table-cell;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    position: static;
+  }
+}
+
+/* Mobile label before cell */
+tbody td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  color: #0078d7;
+  flex-basis: 45%;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* Hide label on desktop */
+@media (min-width: 700px) {
+  tbody td::before {
+    display: none;
+  }
+}
+
+/* No invoices found row */
+td[colspan="5"] {
+  font-style: italic;
+  color: #666;
+  text-align: center;
+  padding: 30px 0;
+}
