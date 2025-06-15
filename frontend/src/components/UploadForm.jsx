@@ -192,21 +192,6 @@ export default function UploadForm() {
                 <option value="overdue">Overdue</option>
               </select>
             </label>
-
-            <label>
-              Invoice Type:
-              <br />
-              <select
-                name="invoiceType"
-                value={fields.invoiceType}
-                onChange={handleFieldChange}
-                required
-                style={{ width: "100%", marginBottom: 10 }}
-              >
-                <option value="To Pay">To Pay</option>
-                <option value="To Collect">To Collect</option>
-              </select>
-            </label>
           </div>
         )}
 

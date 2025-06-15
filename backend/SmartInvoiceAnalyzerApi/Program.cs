@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartInvoiceAnalyzerApi.Data;
+using SmartInvoiceAnalyzerApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<InvoiceDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient<AIService>();
+builder.Services.Configure<AISettings>(builder.Configuration.GetSection("HuggingFace"));
 
 var app = builder.Build();
 

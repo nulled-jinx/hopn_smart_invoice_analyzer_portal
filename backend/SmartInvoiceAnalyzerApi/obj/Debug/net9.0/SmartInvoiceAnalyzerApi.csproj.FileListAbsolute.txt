@@ -154,3 +154,9 @@ C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\obj\D
 C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\obj\Debug\net9.0\SmartInvoiceAnalyzerApi.pdb
 C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\obj\Debug\net9.0\SmartInvoiceAnalyzerApi.genruntimeconfig.cache
 C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\obj\Debug\net9.0\ref\SmartInvoiceAnalyzerApi.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Configuration.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Http.dll
+C:\Users\USER\Dev\HopnSmartInvoiceAnalyzer\backend\SmartInvoiceAnalyzerApi\bin\Debug\net9.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll

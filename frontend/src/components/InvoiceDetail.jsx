@@ -56,7 +56,7 @@ const InvoiceDetail = () => {
   return (
     <div>
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/invoices")}
         style={{
           marginBottom: "20px",
           cursor: "pointer",
@@ -88,10 +88,10 @@ const InvoiceDetail = () => {
       </table>
 
       <h3>Anomalies</h3>
-      {anomalies && anomalies.length > 0 ? (
+      {anomalies ? (
         <ul>
-          {anomalies.map((a, idx) => (
-            <li key={idx} className="anomaly">
+          {anomalies.split("; ").map((a, idx) => (
+            <li key={idx} className="anomaly" style={{ listStyle: "none" }}>
               {a}
             </li>
           ))}
