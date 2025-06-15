@@ -77,7 +77,7 @@ You can check the app image demo in [Images Demo](/ImagesDemo)
 
 4. Update the configuration:
 
-   - Open `appsettings.json`
+   - Create and open `appsettings.json`
    - Configure your AI service credentials (OpenAI/Azure AI)
    - Set up JWT secret if using authentication
 
