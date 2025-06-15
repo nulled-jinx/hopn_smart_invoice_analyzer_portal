@@ -2,6 +2,10 @@
 
 A web-based portal built with .NET Core and React that enables users to upload, analyze, and manage invoices using AI capabilities. The system provides intelligent invoice processing, anomaly detection, and classification features.
 
+## Demo
+
+You can check the app image demo in [Images Demo](/ImagesDemo)
+
 ## Features Implemented
 
 - **Invoice Upload & Parsing**
