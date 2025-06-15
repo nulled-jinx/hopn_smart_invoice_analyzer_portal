@@ -66,7 +66,7 @@ You can check the app image demo in [Images Demo](/ImagesDemo)
 2. Navigate to the backend directory:
 
    ```bash
-   cd backend
+   cd backend/SmartInvoiceAnalyzerApi
    ```
 
 3. Restore dependencies:
