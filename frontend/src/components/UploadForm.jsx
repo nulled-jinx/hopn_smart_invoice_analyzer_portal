@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-import * as pdfjsLib from "pdfjs-dist";
 import Tesseract from "tesseract.js";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
+import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker?worker";
+
+pdfjsLib.GlobalWorkerOptions.workerPort = new pdfjsWorker();
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);
@@ -26,18 +28,36 @@ export default function UploadForm() {
     import.meta.env.VITE_BACKEND_URL || "http://localhost:5143/api";
 
   const extractFieldsFromText = (text) => {
+    const vendor =
+      text
+        .match(
+          /Vendor:\s*([^\n]+?)(?=\s+(Date:|Amount:|Tax ID:|Due Date:|Status:|$))/i
+        )?.[1]
+        ?.trim() || "";
+
+    const date =
+      text
+        .match(/Date:\s*([\d]{4}\s*-\s*[\d]{2}\s*-\s*[\d]{2})/i)?.[1]
+        .replace(/\s+/g, "") || "";
+    const amount = text.match(/Amount:\s*\$?(\d+(\.\d{2})?)/i)?.[1] || "";
+    const taxId = text.match(/Tax ID:\s*(\d+)/i)?.[1] || "";
+    const dueDate =
+      text
+        .match(/Due Date:\s*([\d]{4}\s*-\s*[\d]{2}\s*-\s*[\d]{2})/i)?.[1]
+        .replace(/\s+/g, "") || "";
+    const status =
+      text.match(/Status:\s*([a-z]+)/i)?.[1].toLowerCase() || "pending";
+
+    const invoiceType = text.match(/\b(To Pay|To Collect)\b/i)?.[1] || "To Pay";
+
     return {
-      vendor:
-        text
-          .match(/Vendor[:\s]+([A-Za-z\s]+)/i)?.[1]
-          ?.trim()
-          .split(" ")[0] || "",
-      date: text.match(/Date[:\s]+(\d{4}-\d{2}-\d{2})/)?.[1] || "",
-      amount: text.match(/Amount[:\s]+\$?(\d+(\.\d{2})?)/)?.[1] || "",
-      taxId: text.match(/Tax ID[:\s]+(\d+)/i)?.[1] || "",
-      dueDate: text.match(/Due Date[:\s]+(\d{4}-\d{2}-\d{2})/)?.[1] || "",
-      status: "pending",
-      invoiceType: text.match(/\b(To Pay|To Collect)\b/i),
+      vendor,
+      date,
+      amount,
+      taxId,
+      dueDate,
+      status,
+      invoiceType,
     };
   };
 
