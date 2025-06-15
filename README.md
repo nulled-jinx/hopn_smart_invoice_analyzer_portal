@@ -149,6 +149,7 @@ appsettings.json:
 3. Upload invoices through the upload interface (You can find example upload data in [Example Data](/Example%20Data)). Optionally you can modify fields.
 4. View and manage invoices in the dashboard and invoices view
 5. Check detailed AI analysis in the invoice detail view
+6. Export invoice summary to PDF
 
 ## Project Structure
 
