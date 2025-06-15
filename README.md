@@ -170,4 +170,4 @@ The API documentation is available at `/swagger` when running the backend server
 
 - Data extraction is handled on the frontend to enhance security, preventing potentially malicious data from reaching the backend.
 - Gemini model is used due to running out of credits for other AI services. This model is free to use.
-- The AI model can be easily swapped or updated by modifying the configuration in AIService.cs.
+- The AI model can be easily swapped or updated by modifying the configuration in `AIService.cs`
