@@ -105,7 +105,12 @@ appsettings.json:
 }
 ```
 
-5. Run the backend:
+5. Create Database
+   ```bash
+   dotnet ef database update
+   ```
+
+6. Run the backend:
    ```bash
    dotnet run
    ```
