@@ -37,7 +37,7 @@ export default function UploadForm() {
       taxId: text.match(/Tax ID[:\s]+(\d+)/i)?.[1] || "",
       dueDate: text.match(/Due Date[:\s]+(\d{4}-\d{2}-\d{2})/)?.[1] || "",
       status: "pending",
-      invoiceType: "To Pay",
+      invoiceType: text.match(/\b(To Pay|To Collect)\b/i),
     };
   };
 
@@ -157,25 +157,40 @@ export default function UploadForm() {
         {manualEntry && (
           <div className="manual-fields" style={{ marginBottom: 20 }}>
             {["vendor", "date", "amount", "taxId", "dueDate"].map((field) => (
-              <label key={field}>
-                {field[0].toUpperCase() + field.slice(1)}:
-                <br />
-                <input
-                  type={
-                    field.includes("date")
-                      ? "date"
-                      : field === "amount"
-                      ? "number"
-                      : "text"
-                  }
-                  name={field}
-                  value={fields[field]}
-                  onChange={handleFieldChange}
-                  required
-                  style={{ width: "100%", marginBottom: 10 }}
-                />
-              </label>
+              <>
+                <label key={field}>
+                  {field[0].toUpperCase() + field.slice(1)}:
+                  <br />
+                  <input
+                    type={
+                      field.includes("date")
+                        ? "date"
+                        : field === "amount"
+                        ? "number"
+                        : "text"
+                    }
+                    name={field}
+                    value={fields[field]}
+                    onChange={handleFieldChange}
+                    style={{ width: "100%", marginBottom: 10 }}
+                  />
+                </label>
+              </>
             ))}
+            <label>
+              Invoice Type:
+              <br />
+              <select
+                name="invoiceType"
+                value={fields.invoiceType}
+                onChange={handleFieldChange}
+                required
+                style={{ width: "100%", marginBottom: 10 }}
+              >
+                <option value="To Pay">To Pay</option>
+                <option value="To Collect">To Collect</option>
+              </select>
+            </label>
             <label>
               Status:
               <br />

@@ -11,5 +11,7 @@ namespace SmartInvoiceAnalyzerApi.Models
     public string? Status { get; set; }
     public string? InvoiceType { get; set; }
     public string? Anomalies { get; set; }
+
+    public string? AiOutput { get; set; }
   }
 }

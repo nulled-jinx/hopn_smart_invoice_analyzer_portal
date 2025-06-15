@@ -38,7 +38,7 @@ const InvoiceDetail = () => {
     taxId,
     dueDate,
     status,
-    type,
+    invoiceType,
     anomalies,
     aiOutput,
   } = invoice;
@@ -50,7 +50,7 @@ const InvoiceDetail = () => {
     "Tax ID": taxId || "N/A",
     "Due Date": dueDate ? new Date(dueDate).toLocaleDateString() : "N/A",
     Status: status,
-    Type: type,
+    Type: invoiceType,
   };
 
   return (

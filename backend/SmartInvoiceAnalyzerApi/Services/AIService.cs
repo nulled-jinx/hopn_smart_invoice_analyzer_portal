@@ -1,9 +1,7 @@
 using Microsoft.Extensions.Options;
 using SmartInvoiceAnalyzerApi.Models;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 public class AIService
 {
@@ -16,20 +14,48 @@ public class AIService
     _settings = options.Value;
   }
 
-  public async Task<string> ClassifyInvoice(string inputText)
+  public async Task<string> ClassifyInvoice(
+  string? vendor,
+  decimal? amount,
+  string? taxId,
+  DateTime? dueDate,
+  DateTime? invoiceDate,
+  string? status)
   {
+    string prompt = $@"
+Analyze this invoice:
+
+Vendor: {vendor ?? "N/A"}
+Amount: {amount}
+Tax ID: {taxId ?? "N/A"}
+Due Date: {dueDate:yyyy-MM-dd}
+Invoice Date: {invoiceDate:yyyy-MM-dd}
+Status: {status ?? "N/A"}
+
+Please:
+1. Identify potential red flags (e.g., missing fields, unusual values, ...).
+2. Classify if the invoice is 'To Pay' or 'To Collect'.
+
+Respond ONLY in JSON format as:
+
+{{
+  ""redFlags"": [""Missing Vendor"", ""Amount is zero or negative"", or any other anomaly],
+  ""classification"": [""To Pay"", ""To Collect""],
+  ""aioutput"": Here you return your analysis of the invoice as a string
+}}";
+
     var requestPayload = new
     {
       contents = new[]
+      {
+      new
+      {
+        parts = new[]
         {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = inputText }
-                    }
-                }
-            }
+          new { text = prompt }
+        }
+      }
+    }
     };
 
     var json = JsonSerializer.Serialize(requestPayload);

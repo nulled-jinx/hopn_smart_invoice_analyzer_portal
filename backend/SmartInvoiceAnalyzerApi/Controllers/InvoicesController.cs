@@ -1,9 +1,9 @@
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartInvoiceAnalyzerApi.Data;
 using SmartInvoiceAnalyzerApi.Models;
+using System.Text.RegularExpressions;
 
 namespace SmartInvoiceAnalyzerApi.Controllers
 {
@@ -13,6 +13,7 @@ namespace SmartInvoiceAnalyzerApi.Controllers
   {
     private readonly InvoiceDbContext _context;
     private readonly AIService _aiService;
+
     public InvoicesController(InvoiceDbContext context, AIService aiService)
     {
       _context = context;
@@ -36,65 +37,21 @@ namespace SmartInvoiceAnalyzerApi.Controllers
       return Ok(invoice);
     }
 
-    /*
-        [HttpPost]
-        public async Task<IActionResult> CreateInvoice([FromBody] Invoice invoice)
-        {
-          // _context.Invoices.Add(invoice);
-          // await _context.SaveChangesAsync();
-
-          // return CreatedAtAction(nameof(GetInvoice), new { id = invoice.Id }, invoice);
-
-          var inputText = $"Vendor: {invoice.Vendor}, Amount: {invoice.Amount}, Tax ID: {invoice.TaxId}, Due Date: {invoice.DueDate}, Status: {invoice.Status}";
-
-          var aiResultJson = await _aiService.ClassifyInvoice(inputText);
-
-          using var doc = JsonDocument.Parse(aiResultJson);
-          var predictions = doc.RootElement.EnumerateArray().ToList();
-          var topLabel = predictions.OrderByDescending(p => p.GetProperty("score").GetDecimal()).First().GetProperty("label").GetString();
-
-          invoice.InvoiceType = topLabel == "ENTAILMENT" ? "To Pay" : "To Collect";
-
-          var anomalies = new List<string>();
-
-          if (string.IsNullOrWhiteSpace(invoice.Vendor)) anomalies.Add("Missing Vendor");
-          if (string.IsNullOrWhiteSpace(invoice.TaxId)) anomalies.Add("Missing Tax ID");
-          if (invoice.Amount <= 0) anomalies.Add("Amount is zero or negative");
-          if (invoice.DueDate < invoice.Date) anomalies.Add("Due date is before invoice date");
-
-          invoice.Anomalies = anomalies.Any() ? string.Join("; ", anomalies) : null;
-
-          // Step 5: Save to DB
-          _context.Invoices.Add(invoice);
-          await _context.SaveChangesAsync();
-
-          return CreatedAtAction(nameof(GetInvoice), new { id = invoice.Id }, invoice);
-
-        }
-        */
-
     [HttpPost]
     public async Task<IActionResult> CreateInvoice([FromBody] Invoice invoice)
     {
-      var inputText = $"Vendor: {invoice.Vendor}, Amount: {invoice.Amount}, Tax ID: {invoice.TaxId}, Due Date: {invoice.DueDate}, Status: {invoice.Status}";
+      var aiResultJson = await _aiService.ClassifyInvoice(
+          invoice.Vendor,
+          invoice.Amount,
+          invoice.TaxId,
+          invoice.DueDate,
+          invoice.Date,
+          invoice.Status
+      );
 
-      var aiResultJson = await _aiService.ClassifyInvoice(inputText);
-
+      Console.WriteLine(aiResultJson);
       using var doc = JsonDocument.Parse(aiResultJson);
       var root = doc.RootElement;
-
-      // Assuming Gemini response looks like this:
-      // {
-      //   "candidates": [
-      //     {
-      //       "content": {
-      //         "parts": [
-      //           { "text": "some result text" }
-      //         ]
-      //       }
-      //     }
-      //   ]
-      // }
 
       if (!root.TryGetProperty("candidates", out JsonElement candidatesElem) || candidatesElem.GetArrayLength() == 0)
       {
@@ -102,7 +59,6 @@ namespace SmartInvoiceAnalyzerApi.Controllers
       }
 
       var firstCandidate = candidatesElem[0];
-
       if (!firstCandidate.TryGetProperty("content", out JsonElement contentElem))
       {
         return BadRequest("AI response missing content.");
@@ -113,28 +69,41 @@ namespace SmartInvoiceAnalyzerApi.Controllers
         return BadRequest("AI response content missing parts.");
       }
 
-      // Concatenate all part texts (if multiple)
-      var aiTextBuilder = new StringBuilder();
-      foreach (var part in partsElem.EnumerateArray())
+      var rawText = partsElem[0].GetProperty("text").GetString();
+
+      var jsonMatch = Regex.Match(rawText ?? "", @"```json\s*(\{.*\})\s*```", RegexOptions.Singleline);
+
+      if (!jsonMatch.Success)
       {
-        if (part.TryGetProperty("text", out JsonElement textElem))
-        {
-          aiTextBuilder.Append(textElem.GetString());
-        }
+        return BadRequest("AI response JSON parsing failed.");
       }
-      var aiText = aiTextBuilder.ToString();
 
-      // For demo: Decide InvoiceType based on AI text content, you can customize logic here
-      invoice.InvoiceType = aiText.Contains("To Pay", StringComparison.OrdinalIgnoreCase) ? "To Pay" : "To Collect";
+      var jsonInsideCodeBlock = jsonMatch.Groups[1].Value;
 
-      // Existing anomaly detection logic
-      var anomalies = new List<string>();
-      if (string.IsNullOrWhiteSpace(invoice.Vendor)) anomalies.Add("Missing Vendor");
-      if (string.IsNullOrWhiteSpace(invoice.TaxId)) anomalies.Add("Missing Tax ID");
-      if (invoice.Amount <= 0) anomalies.Add("Amount is zero or negative");
-      if (invoice.DueDate < invoice.Date) anomalies.Add("Due date is before invoice date");
+      using var innerDoc = JsonDocument.Parse(jsonInsideCodeBlock);
+      var innerRoot = innerDoc.RootElement;
 
-      invoice.Anomalies = anomalies.Any() ? string.Join("; ", anomalies) : null;
+      var redFlags = innerRoot.TryGetProperty("redFlags", out var rf) && rf.ValueKind == JsonValueKind.Array
+          ? rf.EnumerateArray().Select(e => e.GetString()).Where(s => !string.IsNullOrEmpty(s)).ToList()
+          : new List<string>();
+
+      var classification = innerRoot.TryGetProperty("classification", out var cl) && cl.ValueKind == JsonValueKind.Array
+          ? cl[0].GetString()
+          : null;
+
+      var aioutputString = innerRoot.TryGetProperty("aioutput", out var aiout) && aiout.ValueKind == JsonValueKind.String
+          ? aiout.GetString()
+          : null;
+
+      invoice.Anomalies = redFlags.Any() ? string.Join("; ", redFlags) : null;
+      var allowedTypes = new HashSet<string> { "To Pay", "To Collect" };
+      if (string.IsNullOrEmpty(invoice.InvoiceType) || !allowedTypes.Contains(invoice.InvoiceType))
+      {
+        invoice.InvoiceType = classification ?? "Unknown";
+      }
+
+
+      invoice.AiOutput = aioutputString ?? rawText;
 
       _context.Invoices.Add(invoice);
       await _context.SaveChangesAsync();
@@ -150,7 +119,7 @@ namespace SmartInvoiceAnalyzerApi.Controllers
       var summary = new
       {
         totalInvoices = invoices.Count,
-        anomalies = invoices.Count(i => i.Anomalies != null && i.Anomalies.Any()),
+        anomalies = invoices.Count(i => !string.IsNullOrEmpty(i.Anomalies)),
         toPay = invoices.Count(i => i.InvoiceType == "To Pay"),
         toCollect = invoices.Count(i => i.InvoiceType == "To Collect")
       };

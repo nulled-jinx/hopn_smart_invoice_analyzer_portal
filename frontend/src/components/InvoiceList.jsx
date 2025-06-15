@@ -138,7 +138,7 @@ const InvoiceList = () => {
                   {inv.status.toLowerCase().charAt(0).toUpperCase() +
                     inv.status.toLowerCase().slice(1)}
                 </td>
-                <td data-label="Type">{inv.type}</td>
+                <td data-label="Type">{inv.invoiceType}</td>
               </tr>
             ))
           )}

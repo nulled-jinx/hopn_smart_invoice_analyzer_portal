@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartInvoiceAnalyzerApi.Data;
 
@@ -10,9 +11,11 @@ using SmartInvoiceAnalyzerApi.Data;
 namespace SmartInvoiceAnalyzerApi.Migrations
 {
     [DbContext(typeof(InvoiceDbContext))]
-    partial class InvoiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250615034821_AddAiOutputToInvoice")]
+    partial class AddAiOutputToInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
@@ -23,7 +26,7 @@ namespace SmartInvoiceAnalyzerApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AiOutput")
+                    b.Property<string>("AiOuput")
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Amount")
