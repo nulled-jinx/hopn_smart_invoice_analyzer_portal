@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartInvoiceAnalyzerApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a57402b7b62d4e2a57187d018fe951ec9e84b894")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f34e2777bb35d6509eb9b9fdfead5236f4b0b84")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartInvoiceAnalyzerApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartInvoiceAnalyzerApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

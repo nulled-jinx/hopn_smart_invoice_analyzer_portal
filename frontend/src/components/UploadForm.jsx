@@ -1,11 +1,24 @@
 import { useState } from "react";
-import axios from "axios";
+import axios from "../utils/axiosConfig";
 import Tesseract from "tesseract.js";
 
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker?worker";
 
 pdfjsLib.GlobalWorkerOptions.workerPort = new pdfjsWorker();
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default function UploadForm() {
   const [file, setFile] = useState(null);

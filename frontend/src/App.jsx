@@ -4,6 +4,9 @@ import UploadForm from "./components/UploadForm";
 import Dashboard from "./components/Dashboard";
 import InvoiceList from "./components/InvoiceList";
 import InvoiceDetail from "./components/InvoiceDetail";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -21,16 +24,52 @@ export default function App() {
             <Link to="/upload" style={{ marginRight: 10 }}>
               Upload Invoice
             </Link>
-            <Link to="/invoices">Invoices</Link>
+            <Link to="/invoices" style={{ marginRight: 10 }}>
+              Invoices
+            </Link>
+            <Link to="/login" style={{ marginRight: 10 }}>
+              Login
+            </Link>
+            <Link to="/signup">Signup</Link>
           </nav>
         </header>
 
         <main>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/upload" element={<UploadForm />} />
-            <Route path="/invoices" element={<InvoiceList />} />
-            <Route path="/invoices/:id" element={<InvoiceDetail />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                <ProtectedRoute>
+                  <UploadForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/invoices"
+              element={
+                <ProtectedRoute>
+                  <InvoiceList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/invoices/:id"
+              element={
+                <ProtectedRoute>
+                  <InvoiceDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </main>
       </div>

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartInvoiceAnalyzerApi.Data;
 using SmartInvoiceAnalyzerApi.Models;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartInvoiceAnalyzerApi.Controllers
 {
@@ -21,6 +22,7 @@ namespace SmartInvoiceAnalyzerApi.Controllers
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetInvoices()
     {
       var invoices = await _context.Invoices.ToListAsync();
@@ -28,6 +30,7 @@ namespace SmartInvoiceAnalyzerApi.Controllers
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetInvoice(int id)
     {
       var invoice = await _context.Invoices.FindAsync(id);
@@ -102,7 +105,6 @@ namespace SmartInvoiceAnalyzerApi.Controllers
         invoice.InvoiceType = classification ?? "Unknown";
       }
 
-
       invoice.AiOutput = aioutputString ?? rawText;
 
       _context.Invoices.Add(invoice);
@@ -112,6 +114,7 @@ namespace SmartInvoiceAnalyzerApi.Controllers
     }
 
     [HttpGet("summary")]
+    [Authorize]
     public async Task<IActionResult> GetInvoicesSummary()
     {
       var invoices = await _context.Invoices.ToListAsync();

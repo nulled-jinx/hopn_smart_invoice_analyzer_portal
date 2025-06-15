@@ -8,5 +8,6 @@ namespace SmartInvoiceAnalyzerApi.Data
     public InvoiceDbContext(DbContextOptions<InvoiceDbContext> options) : base(options) { }
 
     public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<User> Users { get; set; }
   }
 }
