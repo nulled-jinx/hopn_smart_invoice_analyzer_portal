@@ -59,7 +59,7 @@ You can check the app image demo in [Images Demo](/ImagesDemo)
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/nulled-jinx/HopnSmartInvoiceAnalyzer.git
+   git clone https://github.com/nulled-jinx/hopn_smart_invoice_analyzer_portal.git
    cd HopnSmartInvoiceAnalyzer
    ```
 
