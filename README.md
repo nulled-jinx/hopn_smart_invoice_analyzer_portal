@@ -60,7 +60,7 @@ You can check the app image demo in [Images Demo](/ImagesDemo)
 
    ```bash
    git clone https://github.com/nulled-jinx/hopn_smart_invoice_analyzer_portal.git
-   cd HopnSmartInvoiceAnalyzer
+   cd hopn_smart_invoice_analyzer_portal
    ```
 
 2. Navigate to the backend directory:
