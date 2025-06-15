@@ -146,7 +146,7 @@ appsettings.json:
 
 1. Access the application at `http://localhost:5173`
 2. Log in/Sign up using your credentials
-3. Upload invoices through the upload interface
+3. Upload invoices through the upload interface (You can find example upload data in [Example Data](/Example%20Data)). Optionally you can modify fields.
 4. View and manage invoices in the dashboard
 5. Check detailed AI analysis in the invoice detail view
 
